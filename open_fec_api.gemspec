@@ -8,9 +8,9 @@ Gem::Specification.new do |spec|
   spec.version       = OpenFecApi::VERSION
   spec.authors       = ["MJ Rossetti (@s2t2)"]
   spec.email         = ["s2t2mail@gmail.com"]
-  spec.summary       = %q{TODO: Write a short summary. Required.}
-  spec.description   = %q{TODO: Write a longer description. Optional.}
-  spec.homepage      = ""
+  spec.summary       = %q{A ruby wrapper for 18F's [Open FEC (Federal Elections Commission) API](https://api.open.fec.gov/).}
+  spec.description   = %q{A ruby wrapper for 18F's [Open FEC (Federal Elections Commission) API](https://api.open.fec.gov/).}
+  spec.homepage      = "https://github.com/debate-watch/open_fec_api/"
   spec.license       = "MIT"
 
   spec.files         = `git ls-files -z`.split("\x0")
