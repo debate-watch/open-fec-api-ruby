@@ -20,21 +20,34 @@ Or install it yourself as:
 
 ## Configuration
 
-Configure the gem with your [API key](https://api.data.gov/signup/) before making any requests.
+Configure a client with your [API key](https://api.data.gov/signup/) before making any requests.
 
 ```` rb
-OpenFecApi.config("api_key_123")
+client = OpenFecApi::Client.new(:api_key => "api_key_123")
 ````
 
 ## Usage
 
-List, filter, and find candidates.
+### Responses
+
+The client returns HTTParty-style responses:
 
 ```` rb
-candidates = OpenFecApi::Candidate.all
-candidates = OpenFecApi::Candidate.where(:name => "Smith")
-candidate = OpenFecApi::Candidate.find("P00003392")
+response = client.candidates
+puts response.body, response.code, response.message, response.headers.inspect
 ````
+
+### Pagination
+
+Depending on the number of results returned, you might need to page-through the response:
+
+```` rb
+````
+
+
+
+
+
 
 ## Contributing
 

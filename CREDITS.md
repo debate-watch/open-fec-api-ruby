@@ -8,3 +8,4 @@
  + https://github.com/jnunemaker/httparty
  + https://github.com/jnunemaker/httparty/tree/master/examples
  + http://s2t2.info/process-documentation/2015/07/03/how-to-make-a-ruby-gem.html
+ + https://gorails.com/episodes/consuming-an-api-using-httparty-and-creating-a-gem
