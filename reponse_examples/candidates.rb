@@ -1,4 +1,4 @@
-candidates_response = {"pagination"=>{"pages"=>1020, "count"=>20393, "per_page"=>20, "page"=>1},
+{"pagination"=>{"pages"=>1020, "count"=>20393, "per_page"=>20, "page"=>1},
  "api_version"=>"1.0",
  "results"=>
   [{"candidate_status"=>"N",

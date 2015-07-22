@@ -14,8 +14,13 @@ module OpenFecApi
       !self.api_key.nil?
     end
 
-    def candidates
-      self.class.get("/candidates", query: {'api_key' => @api_key})
+    def candidates(options = {})
+      page = options[:page]
+
+      query = {'api_key' => @api_key}
+      query.merge!({'page' => page}) if page
+
+      self.class.get("/candidates", query: query)
     end
   end
 end

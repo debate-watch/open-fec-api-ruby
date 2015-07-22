@@ -28,26 +28,21 @@ client = OpenFecApi::Client.new(:api_key => "api_key_123")
 
 ## Usage
 
-### Responses
-
-The client returns HTTParty-style responses:
-
 ```` rb
 response = client.candidates
 puts response.body, response.code, response.message, response.headers.inspect
+puts response["pagination"] #> {"count"=>20393, "page"=>1, "pages"=>1020, "per_page"=>20}}
+puts response["results"] #> an Array of Hash objects, each representing a candidate
+options = {
+ 'page' => 1
+}
+response = client.candidates(options)
+while response["pagination"]["page"] != response["pagination"]["pages"] do
+  puts "PAGE #{response['pagination']['page']} OF #{response['pagination']['pages']}"
+  options.merge!{'page' => response['pagination']['page'] + 1}
+  response = client.candidates(options)
+end
 ````
-
-### Pagination
-
-Depending on the number of results returned, you might need to page-through the response:
-
-```` rb
-````
-
-
-
-
-
 
 ## Contributing
 
