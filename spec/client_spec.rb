@@ -20,24 +20,42 @@ module OpenFecApi
           expect(candidates.first).to be_kind_of(Hash)
         end
 
-        it "accepts pagination options" do
-          options = {:page => 1}
+        class UnexpectedResultsError < StandardError ; end
 
-          # start
-          response = @client.candidates(options)
-          binding.pry unless response["results"] && response["pagination"]
-          pp "PAGE #{response["pagination"]["page"]} OF #{response["pagination"]["pages"]}", response["results"].first
-          # end
-
-          while response["pagination"]["page"] < response["pagination"]["pages"]  do
-            options.merge!({:page => response["pagination"]["page"] + 1})
-
-            # start
+        def request_and_print(options)
+          attempt = 1
+          begin
             response = @client.candidates(options)
-            binding.pry unless response["results"] && response["pagination"]
-            pp "PAGE #{response["pagination"]["page"]} OF #{response["pagination"]["pages"]}", response["results"].first
-            # end
+            raise UnexpectedResultsError unless response["results"]
+            binding.pry unless response["results"] && response["pagination"] && response.headers["x-ratelimit-remaining"] && response.headers["x-ratelimit-limit"]
+            limit = response.headers["x-ratelimit-limit"].to_i
+            remaining = response.headers["x-ratelimit-remaining"].to_i
+            page = response["pagination"]["page"]
+            pages = response["pagination"]["pages"]
+            first = response["results"].first["name"]
+            last = response["results"].last["name"]
+            puts "PAGE #{page}/#{pages} -- RATE #{remaining}/#{limit} -- #{first} ... #{last} "
+
+            sleep 1 if remaining < limit / 4
+            sleep 2 if remaining < limit / 10
+            return response
+          rescue UnexpectedResultsError => e
+            puts "UNEXPECTED RESULTS -- ATTEMPT #{attempt}"
+            attempt+=1
+            retry unless attempt > 3
           end
+        end
+
+        it "accepts pagination options and avoids rate limits" do
+          options = {:page => 1, :per_page => 100}
+          response = request_and_print(options)
+          expect(response["results"].count).to eql(100)
+          while response["pagination"]["page"].to_i < response["pagination"]["pages"].to_i  do
+            options.merge!({:page => response["pagination"]["page"].to_i + 1})
+            response = request_and_print(options)
+          end
+          success = true
+          expect(success)
         end
       end
     end
