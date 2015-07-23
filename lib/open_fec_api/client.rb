@@ -16,9 +16,11 @@ module OpenFecApi
 
     def candidates(options = {})
       page = options[:page]
+      per_page = options[:per_page]
 
       query = {'api_key' => @api_key}
       query.merge!({'page' => page}) if page
+      query.merge!({'per_page' => per_page}) if per_page
 
       self.class.get("/candidates", query: query)
     end
