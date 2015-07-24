@@ -14,10 +14,7 @@ module OpenFecApi
 
         it "returns responses" do
           response = @client.candidates
-          candidates = response["results"]
-          expect(candidates).to be_kind_of(Array)
-          expect(candidates).not_to be_empty
-          expect(candidates.first).to be_kind_of(Hash)
+          expect(response["results"]).to be_kind_of(Array) #expect(response).to be_kind_of(OpenFecApi::Response)
         end
 
         class UnexpectedResultsError < StandardError ; end
@@ -26,8 +23,7 @@ module OpenFecApi
           attempt = 1
           begin
             response = @client.candidates(options)
-            raise UnexpectedResultsError unless response["results"]
-            binding.pry unless response["results"] && response["pagination"] && response.headers["x-ratelimit-remaining"] && response.headers["x-ratelimit-limit"]
+            raise UnexpectedResultsError unless response["results"] && response["pagination"] && response.headers["x-ratelimit-remaining"] && response.headers["x-ratelimit-limit"]
             limit = response.headers["x-ratelimit-limit"].to_i
             remaining = response.headers["x-ratelimit-remaining"].to_i
             page = response["pagination"]["page"]
@@ -50,12 +46,24 @@ module OpenFecApi
           options = {:page => 1, :per_page => 100}
           response = request_and_print(options)
           expect(response["results"].count).to eql(100)
-          while response["pagination"]["page"].to_i < response["pagination"]["pages"].to_i  do
+          while response["pagination"]["page"].to_i < response["pagination"]["pages"].to_i && response["pagination"]["page"].to_i < 5 do
             options.merge!({:page => response["pagination"]["page"].to_i + 1})
             response = request_and_print(options)
           end
           success = true
           expect(success)
+        end
+
+        it "accepts endpoint-specific options" do
+          options = {:party => "DEM"}
+          response = request_and_print(options)
+          expect(response["results"].map{|c| c["party"]}.uniq).to eql(["DEM"])
+        end
+
+        it "prevents unrecognized params from being requested" do
+          options = {:hair_color => "brown"}
+          response = request_and_print(options)
+          expect(response["results"]).to be_kind_of(Array) #expect(response).to be_kind_of(OpenFecApi::Response)
         end
       end
     end

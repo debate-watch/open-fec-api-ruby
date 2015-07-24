@@ -18,7 +18,7 @@ Or install it yourself as:
 
     $ gem install open_fec_api
 
-## Configuration
+## Usage
 
 Configure a client with your [API key](https://api.data.gov/signup/) before making any requests.
 
@@ -26,31 +26,13 @@ Configure a client with your [API key](https://api.data.gov/signup/) before maki
 client = OpenFecApi::Client.new(:api_key => "api_key_123")
 ````
 
-## Usage
-
 Make a request.
 
 ```` rb
 response = client.candidates
-puts response.body, response.code, response.message, response.headers.inspect
-puts response["pagination"] #> {"count"=>20393, "page"=>1, "pages"=>1020, "per_page"=>20}}
-puts response["results"] #> an Array of Hash objects, each representing a candidate
 ````
 
-Pass custom request parameters.
-
-Paginate through responses using the `:page` parameter.
-
-```` rb
-options = {:page => 1}
-response = client.candidates(options)
-while response["pagination"]["page"].to_i < response["pagination"]["pages"].to_i  do
-  options.merge!({:page => response["pagination"]["page"].to_i + 1})
-  response = client.candidates(options)
-end
-````
-
-Avoid rate-limits by increasing the `:per_page` parameter to 100.
+Request different pages by setting the `:page` parameter. Avoid rate-limits by increasing the `:per_page` parameter to 100.
 
 ```` rb
 options = {:page => 1, :per_page => 100}
@@ -59,6 +41,13 @@ while response["pagination"]["page"].to_i < response["pagination"]["pages"].to_i
   options.merge!({:page => response["pagination"]["page"].to_i + 1})
   response = client.candidates(options)
 end
+````
+
+Make requests using endpoint-specific parameters.
+
+```` rb
+options = {:party => "DEM"}
+response = client.candidates(options)
 ````
 
 ## Contributing
