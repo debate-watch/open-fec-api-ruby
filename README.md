@@ -1,5 +1,7 @@
 # OpenFecApi
 
+[![Gem Version](https://badge.fury.io/rb/open_fec_api.svg)](http://badge.fury.io/rb/open_fec_api)
+
 A ruby wrapper for 18F's [Open FEC (Federal Elections Commission) API](https://api.open.fec.gov/).
 
 ## Installation
