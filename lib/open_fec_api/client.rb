@@ -6,15 +6,13 @@ module OpenFecApi
     include HTTParty
     base_uri 'https://api.open.fec.gov/v1'
 
-    def initialize(options = {})
-      @api_key = options[:api_key]
+    def initialize(api_key)
+      @api_key = api_key
     end
 
     def configured?
       !self.api_key.nil?
     end
-
-    CANDIDATES_PARAMS = ["sort", "sort_hide_null", "year", "office", "candidate_status", "party", "state", "cycle", "district", "incumbent_challenge", "name", "candidate_id", "page", "per_page"]
 
     # Candidates Endpoint
     #
@@ -41,10 +39,13 @@ module OpenFecApi
     #   OpenFecApi::Client.new(:api_key => API_KEY).candidates(:page => 1, :per_page => 100)
     def candidates(options = {})
       query = {'api_key' => @api_key}
-      options.each do |k,v|
-        query.merge!({k.to_s => v}) if CANDIDATES_PARAMS.include?(k.to_s)
+      request_params = ["sort", "sort_hide_null", "year", "office", "candidate_status", "party", "state", "cycle", "district", "incumbent_challenge", "name", "candidate_id", "page", "per_page"]
+      request_options = options.select{|k,v| request_params.include?(k.to_s)}
+      request_options.each do |k,v|
+        query.merge!({k.to_s => v})
       end
-      self.class.get("/candidates", query: query)
+      response = self.class.get("/candidates", query: query)
+      return Response.new(response)
     end
   end
 end

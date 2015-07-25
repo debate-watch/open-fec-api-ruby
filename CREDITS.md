@@ -10,3 +10,5 @@
  + http://s2t2.info/process-documentation/2015/07/03/how-to-make-a-ruby-gem.html
  + https://gorails.com/episodes/consuming-an-api-using-httparty-and-creating-a-gem
  + https://api.open.fec.gov/
+ + http://plumbing.pipelinedeals.com/wrapping-rest-apis-with-ruby/
+ + http://stackoverflow.com/questions/2680523/dry-ruby-initialization-with-hash-argument

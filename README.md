@@ -23,7 +23,7 @@ Or install it yourself as:
 Configure a client with your [API key](https://api.data.gov/signup/) before making any requests.
 
 ```` rb
-client = OpenFecApi::Client.new(:api_key => "api_key_123")
+client = OpenFecApi::Client.new("api_key_123")
 ````
 
 Make a request.
@@ -37,8 +37,8 @@ Request different pages by setting the `:page` parameter. Avoid rate-limits by i
 ```` rb
 options = {:page => 1, :per_page => 100}
 response = client.candidates(options)
-while response["pagination"]["page"].to_i < response["pagination"]["pages"].to_i  do
-  options.merge!({:page => response["pagination"]["page"].to_i + 1})
+while response.page < response.pages  do
+  options.merge!({:page => response.page + 1})
   response = client.candidates(options)
 end
 ````
