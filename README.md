@@ -4,27 +4,17 @@ A ruby wrapper for 18F's [Open FEC (Federal Elections Commission) API](https://a
 
 ## Installation
 
-Add this line to your application's Gemfile:
+Add `gem 'open_fec_api'` to your application's *Gemfile* and run `bundle install`, or install manually with `gem install open_fec_api`.
 
-```ruby
-gem 'open_fec_api'
-```
+## Configuration
 
-And then execute:
-
-    $ bundle
-
-Or install it yourself as:
-
-    $ gem install open_fec_api
-
-## Usage
-
-Configure a client with your [API key](https://api.data.gov/signup/) before making any requests.
+Configure a client with your [API key](https://api.data.gov/signup/) before making requests.
 
 ```` rb
 client = OpenFecApi::Client.new("api_key_123")
 ````
+
+## Usage
 
 Make a request.
 
@@ -32,12 +22,12 @@ Make a request.
 response = client.candidates
 ````
 
-Request different pages by setting the `:page` parameter. Avoid rate-limits by increasing the `:per_page` parameter to 100.
+Request different pages by setting the `:page` request parameter. Avoid rate-limits by increasing the `:per_page` request parameter to 100.
 
 ```` rb
 options = {:page => 1, :per_page => 100}
 response = client.candidates(options)
-while response.page < response.pages  do
+while response.page < response.pages do
   options.merge!({:page => response.page + 1})
   response = client.candidates(options)
 end
