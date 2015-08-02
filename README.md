@@ -2,7 +2,9 @@
 
 [![Gem Version](https://badge.fury.io/rb/open_fec_api.svg)](http://badge.fury.io/rb/open_fec_api)
 
-A ruby wrapper for 18F's [Open Federal Elections Commission API](https://api.open.fec.gov/).
+A ruby wrapper for Open Federal Elections Commission API (https://api.open.fec.gov/).
+
+Makes requests to the "candidates" endpoint.
 
 ## Installation
 
