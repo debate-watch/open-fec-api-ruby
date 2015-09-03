@@ -44,6 +44,14 @@ options = {:party => "DEM"}
 response = client.candidates(options)
 ````
 
+Make requests on Committee endpoint
+
+Make requests using endpoint-specific parameters.
+
+```` rb
+response = client.committees(options)
+````
+
 ## Contributing
 
 Help wrap all the [endpoints](ENDPOINTS.md)!
