@@ -14,6 +14,8 @@ module OpenFecApi
       !self.api_key.nil?
     end
 
+    def 
+
     # Candidates Endpoint
     #
     # https://api.open.fec.gov/developers#!/candidate/get_candidates
@@ -53,7 +55,7 @@ module OpenFecApi
     #Committee endpoint
     #
     # https://api.open.fec.gov/developers#!/committee/get_committees
-    #
+    # @param [Hash] options
     #
     #
     #
