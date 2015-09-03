@@ -12,3 +12,4 @@
  + https://api.open.fec.gov/
  + http://plumbing.pipelinedeals.com/wrapping-rest-apis-with-ruby/
  + http://stackoverflow.com/questions/2680523/dry-ruby-initialization-with-hash-argument
+ + http://github.com/chriscondon/

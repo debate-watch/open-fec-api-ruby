@@ -52,7 +52,13 @@ module OpenFecApi
 
     #Committee endpoint
     #
+    # https://api.open.fec.gov/developers#!/committee/get_committees
     #
+    #
+    #
+    #
+    #
+
     def committees(options = {})
       query = {'api_key' => @api_key}
       request_params = ["page", "per_page", "year", "designation", "committee_type", "organization_type", "cycle", "party", "min_first_file_date", "candidate_id", "state", "committee_id", "name", "q", "max_first_file_date", "sort", "sort_hide_null", "sort_nulls_large"]
