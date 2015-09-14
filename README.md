@@ -2,9 +2,9 @@
 
 [![Gem Version](https://badge.fury.io/rb/open_fec_api.svg)](http://badge.fury.io/rb/open_fec_api)
 
-A ruby wrapper for Open Federal Elections Commission API (https://api.open.fec.gov/).
+A ruby wrapper for [Open Federal Elections Commission API](https://api.open.fec.gov/).
 
-Makes requests to the "candidates" endpoint.
+Facilitates requests to the "candidates" and "committees" endpoints.
 
 ## Installation
 
@@ -43,10 +43,15 @@ Make requests using endpoint-specific parameters.
 options = {:party => "DEM"}
 response = client.candidates(options)
 ````
+### Endpoints
 
-Make requests on Committee endpoint
+Make requests on any of the following endpoints:
+
+ + `candidates`
+ + `committees`
 
 ```` rb
+response = client.candidates(options)
 response = client.committees(options)
 ````
 
@@ -63,6 +68,8 @@ After forking the repo and pushing your changes, create a pull request referenci
 Check out the repo with `git clone git@github.com:debate-watch/open-fec-api-ruby.git`, and `cd open-fec-api-ruby`.
 
 After checking out the repo, run `bin/setup` to install dependencies.
+
+Add an environment variable called `OPEN_FEC_API_KEY`.
 
 ### Testing
 

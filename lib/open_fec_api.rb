@@ -1,6 +1,8 @@
 require "open_fec_api/version"
 require "open_fec_api/client"
 require "open_fec_api/response"
+require "open_fec_api/responses/candidates_response"
+require "open_fec_api/responses/committees_response"
 
 module OpenFecApi
 =begin

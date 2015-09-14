@@ -2,6 +2,7 @@ module OpenFecApi
   class Response
     attr_reader :request, :headers, :api_version, :pagination, :results
 
+    # @param [HTTParty::Response] response
     def initialize(response)
       @request = response.request
       @headers = response.headers
