@@ -2,9 +2,11 @@ require 'httparty'
 
 module OpenFecApi
   class Client
-    attr_reader :api_key
     include HTTParty
+
     base_uri 'https://api.open.fec.gov/v1'
+
+    attr_reader :api_key
 
     def initialize(api_key)
       @api_key = api_key
@@ -14,10 +16,15 @@ module OpenFecApi
       !self.api_key.nil?
     end
 
-    # Candidates Endpoint
-    #
-    # https://api.open.fec.gov/developers#!/candidate/get_candidates
-    #
+    def request_params
+      [
+        "page", "per_page", "year", "designation", "committee_type", "organization_type",
+        "cycle", "party", "min_first_file_date", "candidate_id", "state", "committee_id",
+        "name", "q", "max_first_file_date", "sort", "sort_hide_null", "sort_nulls_large"
+      ]
+    end # NOTE: these params don't apply to all available endpoints ...
+
+    # @param [String] endpoint One of: ["candidates/","committees/"]
     # @param [Hash] options
     #   option options Array[string] :sort Provide a field to sort by. Use - for descending order.
     #   option options Boolean :sort_hide_null Hide null values on sorted column(s).
@@ -35,17 +42,45 @@ module OpenFecApi
     #   option options Integer :page For paginating through results, starting at page 1.
     #   option options Integer :per_page The number of results returned per page. Defaults to 20.
     #
-    # @example
-    #   OpenFecApi::Client.new(:api_key => API_KEY).candidates(:page => 1, :per_page => 100)
-    def candidates(options = {})
-      query = {'api_key' => @api_key}
-      request_params = ["sort", "sort_hide_null", "year", "office", "candidate_status", "party", "state", "cycle", "district", "incumbent_challenge", "name", "candidate_id", "page", "per_page"]
+    def get_response(endpoint, options = {})
+      endpoint_name = endpoint.gsub("/","")
       request_options = options.select{|k,v| request_params.include?(k.to_s)}
+
+      # Parse/compile query params.
+
+      query = {'api_key' => @api_key}
       request_options.each do |k,v|
         query.merge!({k.to_s => v})
       end
-      response = self.class.get("/candidates", query: query)
-      return Response.new(response)
+
+      # Make a request.
+
+      response = self.class.get(endpoint, query: query)
+
+      # Return the proper response.
+
+      response_class_name = endpoint_name.capitalize.concat("Response")
+      return OpenFecApi.const_get(response_class_name).new(response) # response_class_name.constantize.new(response)
+    end
+
+    # Candidates Endpoint
+    #
+    # https://api.open.fec.gov/developers#!/candidate/get_candidates
+    #
+    # @example
+    #   OpenFecApi::Client.new(:api_key => API_KEY).candidates(:page => 1, :per_page => 100)
+    def candidates(options = {})
+      get_response("/candidates", options)
+    end
+
+    # Committees Endpoint
+    #
+    # https://api.open.fec.gov/developers#!/committee/get_committees
+    #
+    # @example
+    #   OpenFecApi::Client.new(:api_key => API_KEY).committees(:page => 1, :per_page => 100)
+    def committees(options = {})
+      get_response("/committees", options)
     end
   end
 end
